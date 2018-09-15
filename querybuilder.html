@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Query Builder Mockup</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css" />
+
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script
+            src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="tether-1.3.3/dist/js/tether.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="sliptree-bootstrap-tokenfield-9c06df4/dist/css/bootstrap-tokenfield.min.css" />
+    <script type="text/javascript" src="sliptree-bootstrap-tokenfield-9c06df4/dist/bootstrap-tokenfield.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.css" />
+    <script type="text/javascript" src="bootstrap-tagsinput-latest/dist/bootstrap-tagsinput.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <style type="text/css">
+        #query-builder_menu {  }
+        #query-builder_panel {  }
+        .entity_form {  }
+        .entity_container {  }
+        .entity_header {
+            padding: 0.5rem;
+            border-right: 3px solid #dddddd;
+            margin: 0;
+        }
+        .entity_select .entity_header {
+            border-top: 3px solid #dddddd;
+        }
+        .entity_body {
+            min-height: 3rem;
+            border-top: 3px solid #dddddd;
+            border-bottom: 3px solid #dddddd;
+            border-left: 3px solid #dddddd;
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px;
+            padding: 0;
+            margin: 0;
+        }
+        .entity_connector { /* rename to entity_junction */
+            min-height: 3rem;
+        }
+        .entity_conditions {
+            min-height: calc(3rem - 6px);
+            border-left: 1px solid #cccccc;
+            background-color: #eaf6ea;
+        }
+        .entity_conditions .form-group {
+            padding: 0 0.5rem 0 0;
+        }
+        .entity_conditions .form-control {
+            margin: 0;
+        }
+        .entity_condition_connector {
+            height: 50%;
+            border-bottom: 1px solid #cccccc;
+            margin: 0;
+            padding: 0;
+        }
+        .junction_select {
+            margin: 0 auto;
+            display: block;
+        }
+        .entity_condition_row {  }
+        .entity_condition_column {
+            margin: 0.5rem 0 0 0;
+        }
+        .entity_condition_group {
+            margin: 0 0.5rem 0 0;
+        }
+        .entity_junction_name {  }
+        .entity_name {  }
+        .entity_add_buttons {  }
+        .entity_browser {
+            height: 100%;
+            border: 3px solid #dddddd;
+            overflow: scroll;
+            padding: 0.5rem 0;
+            margin: 0 1rem 0 0;
+        }
+        .entity_thumbnail {
+            width: 75%;
+            height: 5rem;
+            border: 2px solid #dddddd;
+            border-radius: 10px;
+            margin: 0.5rem auto;
+            background-color: #eaf6ea;
+            text-align: center;
+        }
+        button.collapsible .fa-toggle-up {
+            display: inline-block;
+        }
+        button.collapsible .fa-toggle-down {
+            display: none;
+        }
+        button.collapsible.collapsed .fa-toggle-up {
+            display: none;
+        }
+        button.collapsible.collapsed .fa-toggle-down {
+            display: inline-block;
+        }
+
+        .bootstrap-tagsinput {
+            display: block;
+            width: 100%;
+            padding: calc(.5rem - 1px) .75rem .5rem .75rem;
+            font-size: 1rem;
+            line-height: 1.25;
+            color: #464a4c;
+            background-color: #ffffff;
+            background-image: none;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            border: 1px solid rgba(0,0,0,.15);
+            border-radius: .25rem;
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        }
+        .bootstrap-tagsinput .tag {
+            margin-right: 0;
+            color: #ffffff;
+        }
+        .bootstrap-tagsinput .label-info {
+            background-color: #0e90d2;
+        }
+        .bootstrap-tagsinput .label {
+            display: inline;
+            padding: 0.125rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: normal;
+            line-height: 1;
+            color: #ffffff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+        }
+        .bootstrap-tagsinput input {
+            border: none;
+            box-shadow: none;
+            outline: none;
+            background-color: transparent;
+            padding: 0;
+            margin: 0;
+            width: default;
+            max-width: inherit;
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="query-builder_menu">
+        <nav class="navbar navbar-toggleable navbar-inverse fixed-top bg-inverse">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-brand">
+                <a class="navbar-brand" style="margin: 0;" href="#">Contact Manager</a><i class="fa fa-arrow-right" aria-hidden="true" style="margin: 0 .5rem;"></i>Queries
+            </span>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Edit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">User Guide</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Management Sections
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Contacts</a>
+                            <a class="dropdown-item" href="#">Queries</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Quinn Andrews
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                            <a class="dropdown-item" href="#">Preferences</a>
+                            <a class="dropdown-item" href="#">Log Out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div style="margin-top: 5rem;"></div>
+
+    <div style="margin: 1rem;">
+
+        <div class="navbar-inverse bg-inverse" style="padding: 0.5rem; border: 3px solid #292b2c;">
+            <div class="d-flex justify-content-between">
+                <div class="text-white">
+                    Editing Query<i class="fa fa-arrow-right" aria-hidden="true" style="margin: 0 0.5rem;"></i>Example Query #5765
+                </div>
+                <div></div>
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fa fa-clone" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fa fa-undo" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fa fa-magic" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between" style="color: #cccccc; font-size: 75%; padding-top: .5rem">
+                <div>
+                    Created By Peter Capaldi on July 17th 2017
+                </div>
+                <div></div>
+                <div>
+                    Last Modified By Christopher Ecleston on July 20th 2017
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;"></div>
+
+        <div class="row" style="padding: calc(0.5rem + 3px);">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="queryDefinitionName">Name</label>
+                    <input id="queryDefinitionName"
+                           type="text"
+                           class="form-control"
+                           value="Example Query">
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="queryDefinitionType">Type</label>
+                            <select class="form-control" id="queryDefinitionType">
+                                <option>Type 01</option>
+                                <option>Type 02</option>
+                                <option>Type 03</option>
+                                <option>Type 04</option>
+                                <option>Type 05</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="queryDefinitionStatus">Status</label>
+                            <select class="form-control" id="queryDefinitionStatus">
+                                <option>Active</option>
+                                <option>Inactive</option>
+                                <option>Pending</option>
+                                <option>Obsolete</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="queryDefinitionNotes">Notes</label>
+                    <textarea id="queryDefinitionNotes"
+                              class="form-control"
+                              rows="7">The sound of the TARDIS was made by rubbing a key along a piano string.</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;"></div>
+
+        <div class="criteria_toolbar d-flex justify-content-between bg-inverse" style="padding: 0.5rem; margin-bottom: 1rem; border: 3px solid #292b2c;">
+            <div class="btn-group btn-group-sm" role="group">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button id="versionDropdown"
+                            type="button"
+                            class="btn btn-outline-secondary dropdown-toggle"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            title="select a different version">
+                        <i class="fa fa-history" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu text-sm-left" aria-labelledby="versionDropdown">
+                        <a class="dropdown-item" href="#">Version 1.03 - Christopher Ecleston - July 20th 2017</a>
+                        <a class="dropdown-item" href="#">Version 1.02 - Tom Baker - July 19th 2017</a>
+                        <a class="dropdown-item" href="#">Version 1.01 - Paul McGann - July 18th 2017</a>
+                        <a class="dropdown-item" href="#">Version 1.00 - Peter Capaldi - July 17th 2017</a>
+                    </div>
+                </div>
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        title="set as active version">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                </button>
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        title="view criteria in JSON">
+                    <i class="fa fa-code" aria-hidden="true"></i>
+                </button>
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        title="view current result count">
+                    <i class="fa fa-calculator" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="text-white">
+                Criteria - Example Query - Version 1.03
+            </div>
+            <div class="btn-group btn-group-sm" role="group">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button id="entityDropdown" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-square" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu text-sm-left" aria-labelledby="entityDropdown">
+                        <a class="dropdown-item" href="#">Entity 01</a>
+                        <a class="dropdown-item" href="#">Entity 02</a>
+                        <a class="dropdown-item" href="#">Entity 03</a>
+                    </div>
+                </div>
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        title="expand/collapse all entities"
+                        data-toggle="tooltip"
+                        data-placement="left">
+                    <i class="fa fa-toggle-down" aria-hidden="true"></i>
+                    <!--<i class="fa fa-toggle-up" aria-hidden="true"></i>-->
+                </button>
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        title="arrange entity order"
+                        data-toggle="tooltip"
+                        data-placement="left">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="criteria_panel" class="row no-gutters">
+
+            <div class="entity_browser_container col-2">
+                <div class="entity_browser">
+                    <div class="entity_thumbnail">ENTITY 1</div>
+                    <div class="entity_thumbnail">ENTITY 2</div>
+                    <div class="entity_thumbnail">ENTITY 3</div>
+                    <div class="entity_thumbnail">ENTITY 4</div>
+                    <div class="entity_thumbnail">ENTITY 5</div>
+                </div>
+            </div>
+
+            <div class="entity_collection col-10">
+
+                <div class="entity_container entity_select">
+                    <div class="entity_header row no-gutters">
+                        <div class="col-1"></div>
+                        <div class="entity_junction_name col-1">select</div>
+                        <div class="entity_name col-7">CONTACTS</div>
+                        <div class="entity_add_buttons col-3 btn-group btn-group-sm justify-content-end" role="group" aria-label="...">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button id="addClauseDropdown01" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>
+                                <div class="dropdown-menu text-sm-left" aria-labelledby="addClauseDropdown01">
+                                    <a class="dropdown-item" href="#">First Name</a>
+                                    <a class="dropdown-item" href="#">Last Name</a>
+                                    <a class="dropdown-item" href="#">Email Address</a>
+                                    <a class="dropdown-item" href="#">Date Added</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary">
+                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary collapsible" data-toggle="collapse" data-target="#collapseExample01" aria-expanded="false" aria-controls="collapseExample04">
+                                <i class="fa fa-toggle-down" aria-hidden="true"></i>
+                                <i class="fa fa-toggle-up" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="entity_body row no-gutters">
+                        <div class="entity_connector col-1">
+                            <div class="row no-gutters align-items-center h-100">
+                                <div class="col-12">
+                                    <select class="form-control-sm junction_select">
+                                        <option>&</option>
+                                        <option>V</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="entity_conditions col-11">
+                            <div id="collapseExample01"> <!--class="collapse"-->
+                                <div class="row no-gutters align-items-center entity_condition_row">
+                                    <div class="col-1 entity_condition_column">
+                                        <div class="entity_condition_connector"></div>
+                                    </div>
+                                    <div class="form-group col-3 entity_condition_column">
+                                        <select class="form-control">
+                                            <option>First Name</option>
+                                            <option selected>Last Name</option>
+                                            <option>Email Address</option>
+                                            <option>Date Added</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2 entity_condition_column">
+                                        <select class="form-control">
+                                            <option selected>eq</option>
+                                            <option>neq</option>
+                                            <option>like</option>
+                                            <option>gt</option>
+                                            <option>gte</option>
+                                            <option>lt</option>
+                                            <option>lte</option>
+                                            <option>in</option>
+                                            <option>btw</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-5 entity_condition_column">
+                                        <input class="form-control" type="text" value="Who"/>
+                                    </div>
+                                    <div class="col-1 entity_condition_column">
+                                        <button type="button" class="btn btn-sm btn-secondary">
+                                            <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters align-items-center entity_condition_row">
+                                    <div class="col-1 entity_condition_column">
+                                        <div class="entity_condition_connector"></div>
+                                    </div>
+                                    <div class="form-group col-3 entity_condition_column">
+                                        <select class="form-control">
+                                            <option>First Name</option>
+                                            <option>Last Name</option>
+                                            <option selected>Email Address</option>
+                                            <option>Date Added</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2 entity_condition_column">
+                                        <select class="form-control">
+                                            <option>eq</option>
+                                            <option>neq</option>
+                                            <option selected>like</option>
+                                            <option>gt</option>
+                                            <option>gte</option>
+                                            <option>lt</option>
+                                            <option>lte</option>
+                                            <option>in</option>
+                                            <option>btw</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-5 entity_condition_column">
+                                        <input class="form-control" type="text" value="%bbc.co.uk"/>
+                                    </div>
+                                    <div class="col-1 entity_condition_column">
+                                        <button type="button" class="btn btn-sm btn-secondary">
+                                            <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters align-items-center entity_condition_row">
+                                    <div class="col-1 entity_condition_column">
+                                        <div class="entity_condition_connector"></div>
+                                    </div>
+                                    <div class="form-group col-3 entity_condition_column">
+                                        <select class="form-control">
+                                            <option>First Name</option>
+                                            <option>Last Name</option>
+                                            <option>Email Address</option>
+                                            <option selected>Date Added</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2 entity_condition_column">
+                                        <select class="form-control">
+                                            <option>eq</option>
+                                            <option>neq</option>
+                                            <option>like</option>
+                                            <option>gt</option>
+                                            <option>gte</option>
+                                            <option>lt</option>
+                                            <option>lte</option>
+                                            <option>in</option>
+                                            <option selected>btw</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group input-group col-5 entity_condition_column">
+                                        <input class="form-control" type="datetime" value="1017/07/24"/>
+                                        <span class="input-group-addon" id="basic-addon1">&</span>
+                                        <input class="form-control" type="datetime" value="2017/07/24" aria-describedby="basic-addon1">
+                                    </div>
+                                    <div class="col-1 entity_condition_column">
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters entity_condition_group">
+                                    <div class="col-1 entity_condition_column">
+                                        <div class="entity_condition_connector"></div>
+                                    </div>
+                                    <div class="col-11 entity_condition_column">
+                                        <div class="entity_body row no-gutters">
+                                            <div class="entity_connector col-1">
+                                                <div class="row no-gutters align-items-center h-100">
+                                                    <div class="col-12">
+                                                        <select class="form-control-sm junction_select">
+                                                            <option>&</option>
+                                                            <option selected>V</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="entity_conditions col-11">
+                                                <div class="row no-gutters align-items-center entity_condition_row">
+                                                    <div class="col-1 entity_condition_column">
+                                                        <div class="entity_condition_connector"></div>
+                                                    </div>
+                                                    <div class="form-group col-3 entity_condition_column">
+                                                        <select class="form-control">
+                                                            <option selected>First Name</option>
+                                                            <option>Last Name</option>
+                                                            <option>Email Address</option>
+                                                            <option>Date Added</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-2 entity_condition_column">
+                                                        <select class="form-control">
+                                                            <option selected>eq</option>
+                                                            <option>neq</option>
+                                                            <option>like</option>
+                                                            <option>gt</option>
+                                                            <option>gte</option>
+                                                            <option>lt</option>
+                                                            <option>lte</option>
+                                                            <option>in</option>
+                                                            <option>btw</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-5 entity_condition_column">
+                                                        <input class="form-control" type="text" value="Doctor"/>
+                                                    </div>
+                                                    <div class="col-1 entity_condition_column">
+                                                        <button type="button" class="btn btn-sm btn-secondary">
+                                                            <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="row no-gutters align-items-center entity_condition_row">
+                                                    <div class="col-1 entity_condition_column">
+                                                        <div class="entity_condition_connector"></div>
+                                                    </div>
+                                                    <div class="form-group col-3 entity_condition_column">
+                                                        <select class="form-control">
+                                                            <option selected>First Name</option>
+                                                            <option>Last Name</option>
+                                                            <option>Email Address</option>
+                                                            <option>Date Added</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-2 entity_condition_column">
+                                                        <select class="form-control">
+                                                            <option selected>eq</option>
+                                                            <option>neq</option>
+                                                            <option>like</option>
+                                                            <option>gt</option>
+                                                            <option>gte</option>
+                                                            <option>lt</option>
+                                                            <option>lte</option>
+                                                            <option>in</option>
+                                                            <option>btw</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-5 entity_condition_column">
+                                                        <input class="form-control" type="text" value="Theta Sigma"/>
+                                                    </div>
+                                                    <div class="col-1 entity_condition_column">
+                                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom: 0.5rem;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 0.5rem;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="entity_container entity_with">
+                    <div class="entity_header row no-gutters">
+                        <div class="col-1"></div>
+                        <div class="entity_junction_name col-1">with</div>
+                        <div class="entity_name col-7">CONTACT ORDER HISTORY</div>
+                        <div class="entity_add_buttons col-3 btn-group btn-group-sm justify-content-end" role="group" aria-label="...">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button id="addClauseDropdown02" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>
+                                <div class="dropdown-menu text-sm-left" aria-labelledby="addClauseDropdown02">
+                                    <a class="dropdown-item" href="#">Property 01</a>
+                                    <a class="dropdown-item" href="#">Property 02</a>
+                                    <a class="dropdown-item" href="#">Property 03</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary">
+                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary collapsible" data-toggle="collapse" data-target="#collapseExample02" aria-expanded="false" aria-controls="collapseExample04">
+                                <i class="fa fa-toggle-down" aria-hidden="true"></i>
+                                <i class="fa fa-toggle-up" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="entity_body row no-gutters">
+                        <div class="entity_connector col-1"></div>
+                        <div class="entity_conditions col-11">
+                            <div id="collapseExample02" class=""> <!--collapse-->
+                                <div class="row no-gutters align-items-center entity_condition_row">
+                                    <div class="col-1 entity_condition_column">
+                                        <div class="entity_condition_connector"></div>
+                                    </div>
+                                    <div class="form-group col-3 entity_condition_column">
+                                        <select class="form-control">
+                                            <option>Category</option>
+                                            <option>Item</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2 entity_condition_column">
+                                        <select class="form-control">
+                                            <option selected>eq</option>
+                                            <option>neq</option>
+                                            <option>like</option>
+                                            <option>gt</option>
+                                            <option>gte</option>
+                                            <option>lt</option>
+                                            <option>lte</option>
+                                            <option selected>in</option>
+                                            <option>btw</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-5 entity_condition_column">
+                                        <input id="categoryInExample" class="form-control" type="text" data-role="tagsinput"  value="Daleks,Cybermen,Autons"/>
+                                        <!--<script type="text/javascript">
+                                            $('#categoryInExample').tokenfield({
+                                                autocomplete: {
+                                                    source: ['1234 Cat Socks','5678 Cat Toys','9012 Cat Trees','3456 Cat Food'],
+                                                    delay: 100
+                                                }
+                                            })
+                                        </script>-->
+                                    </div>
+                                    <div class="col-1 entity_condition_column">
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 0.5rem;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="entity_container entity_with">
+                    <div class="entity_header row no-gutters">
+                        <div class="col-1"></div>
+                        <div class="entity_junction_name col-1">with</div>
+                        <div class="entity_name col-7">CONTACT NEWSLETTER RESPONSE HISTORY</div>
+                        <div class="entity_add_buttons col-3 btn-group btn-group-sm justify-content-end" role="group" aria-label="...">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button id="addClauseDropdown03" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>
+                                <div class="dropdown-menu text-sm-left" aria-labelledby="addClauseDropdown03">
+                                    <a class="dropdown-item" href="#">Property 01</a>
+                                    <a class="dropdown-item" href="#">Property 02</a>
+                                    <a class="dropdown-item" href="#">Property 03</a>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary">
+                                <i class="fa fa-square-o" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary collapsible collapsed" data-toggle="collapse" data-target="#collapseExample03" aria-expanded="false" aria-controls="collapseExample04">
+                                <i class="fa fa-toggle-down" aria-hidden="true"></i>
+                                <i class="fa fa-toggle-up" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="entity_body row no-gutters">
+                        <div class="entity_connector col-1"></div>
+                        <div class="entity_conditions col-11">
+                            <div id="collapseExample03" class="collapse">
+                                Collapsible Content 02
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>
